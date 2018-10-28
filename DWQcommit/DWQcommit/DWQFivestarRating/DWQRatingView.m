@@ -52,6 +52,7 @@ extern float decimalwithFormat(NSString * format, float floatV) {
     UIColor *_normalColor;
     UIColor *_highlightColor;
     CGFloat _yellowWidthPercent;
+    NSInteger _totalStart;
 }
 
 @end
@@ -81,6 +82,7 @@ extern float decimalwithFormat(NSString * format, float floatV) {
         _frameChain = ^(CGPoint point, float size){
             __strong typeof(weakSelf) strongSelf = weakSelf;
             strongSelf.frame = CGRectMake(point.x, point.y, size*5, size);
+            strongSelf->_totalStart = 5;
             return strongSelf;
         };
     }
@@ -113,10 +115,25 @@ DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorCha
     return [[self alloc] initWithPoint:point withSize:size];
 }
 
++ (instancetype)initWithPoint:(CGPoint)point withSize:(float)size totalStart:(NSInteger)totalStart {
+    return [[self alloc] initWithPoint:point withSize:size totalStart:totalStart];
+}
+
 - (instancetype)initWithPoint:(CGPoint)point withSize:(float)size
 {
     self = [super initWithFrame:CGRectMake(point.x, point.y, size*5, size)];
     if (self) {
+        _totalStart = 5;
+        [self _initViews];
+    }
+    return self;
+}
+
+- (instancetype)initWithPoint:(CGPoint)point withSize:(float)size totalStart:(NSInteger)totalStart
+{
+    self = [super initWithFrame:CGRectMake(point.x, point.y, size*totalStart, size)];
+    if (self) {
+        _totalStart = totalStart;
         [self _initViews];
     }
     return self;
@@ -126,6 +143,7 @@ DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorCha
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _totalStart = 5;
         [self _initViews];
     }
     return self;
@@ -163,7 +181,7 @@ DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorCha
     
     _canTouch = YES;
     
-    _scoreNum = @5;
+    _scoreNum = [NSNumber numberWithInteger:_totalStart];
     
     _needIntValue = NO;
     
@@ -173,8 +191,8 @@ DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorCha
 - (void)setScoreNum:(NSNumber *)scoreNum
 {
     if (_scoreNum != scoreNum) {
-        if ([scoreNum floatValue] > 5.0f) {
-            _scoreNum = @5;
+        if ([scoreNum floatValue] > _totalStart) {
+            _scoreNum = [NSNumber numberWithInteger:_totalStart];
         }else if (scoreNum < 0){
             _scoreNum = @0;
         }
@@ -210,7 +228,7 @@ DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorCha
     [super layoutSubviews];
     
     //5个星星铺满后的宽度
-    CGFloat grayWidth = self.frame.size.height * 5;
+    CGFloat grayWidth = self.frame.size.height * _totalStart;
     
     CGFloat grayHight = self.frame.size.height;
     
@@ -233,7 +251,7 @@ DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorCha
     float score = [_scoreNum floatValue];
     
     //分数的百分比
-    float percent = score/5;
+    float percent = score/_totalStart;
     
     //根据分数的百分比调整_yelloView视图的宽度
     CGRect rect = _yelloView.frame;
@@ -276,11 +294,11 @@ DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorCha
     
     float stringFloat = touchPoint.x;
     
-    float a = decimalwithFormat(scoreFormat, 5.0f*stringFloat/weight);
+    float a = decimalwithFormat(scoreFormat, _totalStart*stringFloat/weight);
     
     if (_needIntValue) {
-        if (a >5) {
-            a = 5;
+        if (a >_totalStart) {
+            a = _totalStart;
         }else if (a == 0) {
             a = 1;
         }else {

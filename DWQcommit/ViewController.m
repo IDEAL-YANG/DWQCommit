@@ -17,11 +17,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    DWQRatingView *start2= [DWQRatingView initWithPoint:CGPointMake(self.view.bounds.size.width/2-70, 230) withSize:30 totalStart:3];
+    
+    [self.view addSubview:start2];
+    start2.needIntValue=YES;
+    
+//    start2.scoreNum=@4;//星星显示个数
+    
+    start2.normalColorChain([UIColor redColor]);
+    start2.highlightColorChian([UIColor greenColor]);
+    
+    start2.scroreBlock=^(NSNumber *number){
+        NSLog(@"返回的分数:%@",number);
+    };
+    
 }
 - (IBAction)commit:(id)sender {
     
-    DWQCommitController *publishVC = [[DWQCommitController alloc] init];
-    [self presentViewController:publishVC animated:YES completion:nil];
+//    DWQCommitController *publishVC = [[DWQCommitController alloc] init];
+//    [self presentViewController:publishVC animated:YES completion:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {

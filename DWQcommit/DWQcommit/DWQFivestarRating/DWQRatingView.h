@@ -79,6 +79,8 @@ typedef DWQRatingView * (^DWQColorChain)          (UIColor *color);
  */
 + (instancetype)initWithPoint:(CGPoint)point withSize:(float)size;
 
++ (instancetype)initWithPoint:(CGPoint)point withSize:(float)size totalStart:(NSInteger)totalStart;
+
 /**
  *  分数是否显示为整数 如果为yes星星都是整个整个显示
  */
