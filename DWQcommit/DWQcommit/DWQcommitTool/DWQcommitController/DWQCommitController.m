@@ -86,8 +86,8 @@
     _star.needIntValue=NO;   //是否整数显示，默认整数显示
     _star.canTouch=YES;//是否可以点击，默认为NO
     _star.scoreNum=@0;//星星显示个数
-    _star.normalColorChain([UIColor grayColor]);
-    _star.highlightColorChian([UIColor redColor]);
+    _star.normalColor = [UIColor grayColor];
+    _star.highlightColor = [UIColor redColor];
     
     //发布按钮颜色
     _explainLabel.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:199.0/255.0 alpha:1.0];

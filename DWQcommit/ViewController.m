@@ -25,8 +25,8 @@
     
 //    start2.scoreNum=@4;//星星显示个数
     
-    start2.normalColorChain([UIColor redColor]);
-    start2.highlightColorChian([UIColor greenColor]);
+    start2.normalColor = [UIColor redColor];
+    start2.highlightColor = [UIColor greenColor];
     
     start2.scroreBlock=^(NSNumber *number){
         NSLog(@"返回的分数:%@",number);

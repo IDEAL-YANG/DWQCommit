@@ -23,20 +23,6 @@ __weak typeof(_self_) weakself = _self_;\
 #define StrongSelf(_self_)\
 __strong typeof(weak##_self_) self = weak##_self_;
 
-#define DWQChainObjectDefine(_key_name_,_Chain_, _type_ , _block_type_)\
-- (_block_type_)_key_name_\
-{\
-WeakSelf(self);\
-if (!_##_key_name_) {\
-_##_key_name_ = ^(_type_ value){\
-StrongSelf(self);\
-[self set##_Chain_:value];\
-return self;\
-};\
-}\
-return _##_key_name_;\
-}\
-
 static NSString *scoreFormat = @"0.00";//分数格式化样式 依据四舍五入
 
 //格式化小数 四舍五入类型
@@ -59,54 +45,6 @@ extern float decimalwithFormat(NSString * format, float floatV) {
 
 
 @implementation DWQRatingView
-
-#pragma mark ---链式调用
-
-@synthesize frameChain = _frameChain;
-@synthesize needIntValueChain =_needIntValueChain;
-@synthesize canTouchChain = _canTouchChain;
-@synthesize scroreBlockChain = _scroreBlockChain;
-@synthesize scoreNumChain = _scoreNumChain;
-@synthesize normalColorChain = _normalColorChain;
-@synthesize highlightColorChian = _highlightColorChian;
-@synthesize superViewChain = _superViewChain;
-
-+ (instancetype)init
-{
-    return [[self alloc] init];
-}
-
-- (DWQFrameChain)frameChain {
-    if (!_frameChain) {
-        __weak typeof(self) weakSelf = self;
-        _frameChain = ^(CGPoint point, float size){
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            strongSelf.frame = CGRectMake(point.x, point.y, size*5, size);
-            strongSelf->_totalStart = 5;
-            return strongSelf;
-        };
-    }
-    return _frameChain;
-}
-
-DWQChainObjectDefine(needIntValueChain, NeedIntValue, BOOL, DWQNeedIntValueChain);
-DWQChainObjectDefine(canTouchChain, CanTouch, BOOL, DWQCanTouchChain);
-DWQChainObjectDefine(scroreBlockChain, ScroreBlock, DWQScoreBlock, DWQScroreBlockChain);
-DWQChainObjectDefine(scoreNumChain, ScoreNum, NSNumber *, DWQScoreNumChain);
-DWQChainObjectDefine(normalColorChain, NormalColor, UIColor *, DWQColorChain);
-DWQChainObjectDefine(highlightColorChian, HighlightColor, UIColor *, DWQColorChain);
-
-- (DWQSuperViewChain)superViewChain {
-    if (!_superViewChain) {
-        WeakSelf(self);
-        _superViewChain = ^(UIView *superView){
-            StrongSelf(self);
-            [superView addSubview:self];
-            return self;
-        };
-    }
-    return _superViewChain;
-}
 
 #pragma mark --- 方法调用
 
